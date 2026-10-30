@@ -11,6 +11,7 @@ export default function BoardsPage() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const supabase = createClient();
+  const [boardKey, setBoardKey] = useState(0)
 
   useEffect(() => {
     async function checkUser() {
@@ -25,14 +26,22 @@ export default function BoardsPage() {
 
   if (loading) return <div>Loading...</div>;
 
- return (
-    <div className="min-h-screen bg-gray-950 p-8">
-      <div className="flex items-center justify-between mb-8">
-        <h1 className="text-2xl font-semibold text-gray-100">Your boards</h1>
+return (
+  <div className="min-h-screen bg-gray-950 p-8">
+    <header className="flex items-center justify-between mb-10 border-b border-white/10 pb-4">
+      <div className="flex items-center gap-3">
+        <div className="bg-indigo-500 text-white font-bold text-lg px-3 py-1 rounded-lg">
+          K
+        </div>
+        <span className="text-white font-bold text-xl tracking-tight">KanFlow</span>
+      </div>
+      <div className="flex items-center gap-4">
+        <p className="text-white/50 text-sm">Your boards</p>
         <SignOutButton />
       </div>
-      <CreateBoardForm />
-      <BoardList />
-    </div>
-  );
+    </header>
+    <CreateBoardForm onBoardCreated={() => setBoardKey(prev => prev + 1)} />
+    <BoardList key={boardKey} />
+  </div>
+);
 }

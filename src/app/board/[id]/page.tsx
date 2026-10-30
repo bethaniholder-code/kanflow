@@ -298,13 +298,19 @@ const handleDescriptionSave = async (cardId: string, description: string) => {
       }}
     >
       <div className="flex gap-4 items-start overflow-x-auto pb-4">
-        {lists.length === 0 && (
-          <p className="text-white/60">No lists yet. Add one to get started.</p>
-        )}
+       {lists.length === 0 && (
+  <div className="flex flex-col items-center justify-center py-24 text-center w-full">
+    <div className="text-5xl mb-4">📋</div>
+    <h2 className="text-white font-semibold text-lg mb-1">No lists yet</h2>
+    <p className="text-white/50 text-sm max-w-xs">
+      Add your first list using the form to the right to start building your board.
+    </p>
+  </div>
+)}
         {lists.map((list) => (
           <div
             key={list.id}
-            className="bg-gray-100 rounded-lg p-3 w-64 flex-shrink-0"
+            className="bg-gray-800/80 backdrop-blur rounded-xl p-3 w-64 flex-shrink-0 border border-white/10"
           >
             <div className="flex items-center justify-between mb-3">
               {editingListId === list.id ? (
@@ -326,7 +332,7 @@ const handleDescriptionSave = async (cardId: string, description: string) => {
   />
 ) : (
   <h3
-    className="font-semibold text-gray-800 cursor-pointer"
+    className="font-semibold text-white text-sm cursor-pointer"
     onClick={() => {
       setEditingListId(list.id)
       setEditingListTitle(list.title)
@@ -337,7 +343,7 @@ const handleDescriptionSave = async (cardId: string, description: string) => {
 )}
               <button
                 onClick={() => handleListDelete(list.id)}
-                className="text-gray-400 hover:text-red-500 text-lg leading-none"
+                className="text-white/30 hover:text-red-400 text-lg leading-none"
               >
                 ×
               </button>
@@ -348,17 +354,22 @@ const handleDescriptionSave = async (cardId: string, description: string) => {
             >
               <DroppableList id={list.id}>
               <div className="flex flex-col gap-2">
-                {list.cards.map((card) => (
-                  <SortableCard
-                    key={card.id}
-                    id={card.id}
-                    title={card.title}
-                    onDelete={(cardId) => handleCardDelete(cardId, list.id)}
-                    onEdit={(cardId, newTitle) => handleCardEdit(cardId, newTitle)}
-                     onOpen={() => setSelectedCard(card)}
-                 />
-                ))}
-              </div>
+  {list.cards.length === 0 && (
+    <p className="text-white/30 text-xs text-center py-4 italic">
+      No cards yet
+    </p>
+  )}
+  {list.cards.map((card) => (
+   <SortableCard
+      key={card.id}
+      id={card.id}
+      title={card.title}
+      onDelete={(cardId) => handleCardDelete(cardId, list.id)}
+      onEdit={(cardId, newTitle) => handleCardEdit(cardId, newTitle)}
+      onOpen={() => setSelectedCard(card)}
+    />
+  ))}
+</div>
               </DroppableList>
             </SortableContext>
             <AddCardForm

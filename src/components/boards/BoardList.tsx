@@ -8,6 +8,7 @@ type Board = {
   id: string
   title: string
   owner_id: string
+  color: string | null
 }
 
 export default function BoardList() {
@@ -22,7 +23,7 @@ export default function BoardList() {
     async function fetchBoards() {
       const { data, error } = await supabase
         .from('boards')
-        .select('id, title, owner_id')
+        .select('id, title, owner_id, color')
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -74,14 +75,23 @@ const handleEdit = async (boardId: string) => {
 }
 
   if (loading) return <p className="text-gray-400">Loading boards...</p>
-  if (boards.length === 0) return <p className="text-gray-400">No boards yet. Create one above.</p>
+  if (boards.length === 0) return (
+  <div className="flex flex-col items-center justify-center py-24 text-center">
+    <div className="text-5xl mb-4">🗂️</div>
+    <h2 className="text-white font-semibold text-lg mb-1">No boards yet</h2>
+    <p className="text-gray-400 text-sm max-w-xs">
+      Create your first board using the form above to start organizing your work.
+    </p>
+  </div>
+)
 
   return (
     <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
       {boards.map((board) => (
         <div
+        style={{ backgroundColor: board.color || '#5046e5' }}
         key={board.id}
-  className="relative group bg-indigo-600 hover:bg-indigo-500 cursor-pointer rounded-lg p-4 h-24 flex items-end"
+  className="relative group cursor-pointer rounded-lg p-4 h-24 flex items-end"
   onClick={() => editingId !== board.id && router.push(`/board/${board.id}`)}
 >
   {editingId === board.id ? (

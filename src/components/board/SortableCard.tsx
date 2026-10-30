@@ -38,7 +38,7 @@ export default function SortableCard({ id, title, onDelete, onEdit, onOpen }: Pr
             {...attributes}
             {...listeners}
              onPointerUp={onOpen}
-            className="relative group bg-white rounded p-2 text-sm text-gray-800 shadow-sm cursor-grab active:cursor-grabbing"
+            className="relative group bg-gray-700 rounded p-2 text-sm text-white shadow-sm cursor-grab active:cursor-grabbing"
             >
 
                 {isEditing ? (
